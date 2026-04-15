@@ -8,23 +8,20 @@
 </head>
 
 <body>
-
-<!-- ВКЛАДКИ -->
 <div class="tabs">
   <button class="tab active" onclick="openTab('sheet', this)">Анкета</button>
   <button class="tab" onclick="openTab('skills', this)">Навыки</button>
   <button class="tab" onclick="loadWiki(this)">Вики</button>
 </div>
 
-<!-- ================= АНКЕТА ================= -->
 <div id="sheet" class="panel show">
-
   <div class="top-grid">
-    <input placeholder="Имя">
-    <input placeholder="Класс">
-    <input placeholder="Раса">
-    <input type="number" placeholder="Уровень">
-    <input type="number" placeholder="Опыт">
+    <input id="user" placeholder="Имя">
+    <input id="user" placeholder="Класс">
+    <input id="user" placeholder="Раса">
+    <input id="user" placeholder="Происхождение">
+    <input id="user" type="number" placeholder="Уровень">
+    <input id="user" type="number" placeholder="Опыт">
   </div>
 
   <div class="main-grid">
@@ -35,72 +32,78 @@
       <div class="stat-line">
         <span>Сила</span>
         <input id="str" type="number" value="10">
-        <button onclick="rollSave('str')">🎲</button>
-        <div id="str_save"></div>
+
       </div>
       <div class="stat-line">
         <span>Ловкость</span>
         <input id="dex" type="number" value="10">
-        <button onclick="rollSave('dex')">🎲</button>
-        <div id="dex_save"></div>
+
       </div>
       <div class="stat-line">
         <span>Телосложение</span>
         <input id="con" type="number" value="10">
-        <button onclick="rollSave('con')">🎲</button>
-        <div id="con_save"></div>
+
       </div>
       <div class="stat-line">
         <span>Интеллект</span>
         <input id="int" type="number" value="10">
-        <button onclick="rollSave('int')">🎲</button>
-        <div id="int_save"></div>
+
       </div>
       <div class="stat-line">
         <span>Мудрость</span>
         <input id="wis" type="number" value="10">
-        <button onclick="rollSave('wis')">🎲</button>
-        <div id="wis_save"></div>
+
       </div>
       <div class="stat-line">
         <span>Харизма</span>
         <input id="cha" type="number" value="10">
-        <button onclick="rollSave('cha')">🎲</button>
-        <div id="cha_save"></div>
+
       </div>
     </div>
     <div class="card skills">
 
     <h3>Навыки</h3>
 
-    <div class="skill-row">
+    <div class="stat-line">
       <span>Атлетика</span>
-      <input type="number">
+      <input id="str1" value="0" type="number">
+      <button onclick="rollSkill('str1','str')">🎲</button>
+      <div id="str1_res"></div>
     </div>
 
-    <div class="skill-row">
+    <div class="stat-line">
       <span>Акробатика</span>
-      <input type="number">
+      <input id="agl1" value="0" type="number">
+      <button onclick="rollSkill('agl1','dex')">🎲</button>
+      <div id="agl1_res"></div>
     </div>
 
-    <div class="skill-row">
+    <div class="stat-line">
       <span>Скрытность</span>
-      <input type="number">
+      <input id="agl2" value="0" type="number">
+      <button onclick="rollSkill('agl2','dex')">🎲</button>
+      <div id="agl2_res"></div>
     </div>
 
-    <div class="skill-row">
+    <div class="stat-line">
       <span>История</span>
-      <input type="number">
+      <input id="int1" value="0" type="number">
+      <button onclick="rollSkill('int1','int')">🎲</button>
+      <div id="int1_res"></div>
     </div>
 
-    <div class="skill-row">
+    <div class="stat-line">
       <span>Восприятие</span>
-      <input type="number">
+      <input id="wis1" value="0" type="number">
+      <button onclick="rollSkill('wis1','wis')">🎲</button>
+      <div id="wis1_res"></div>
     </div>
 
-    <div class="skill-row">
+    <div class="stat-line">
       <span>Убеждение</span>
-      <input type="number">
+      <input id="cha1" value="0" type="number">
+      <button  onclick="rollSkill('cha1','cha')">🎲</button>
+      <div id="cha1_res"></div>
     </div>
 
   </div>
@@ -135,29 +138,34 @@ function loadWiki(btn){
     });
 }
 
-
-function mod(v){
-  return Math.floor((v - 10) / 2);
+function getStat(stat){
+  return parseInt(document.getElementById(stat).value) || 10;
 }
 
+function getMod(stat){
+  return Math.floor((stat - 10) / 2);
+}
 
-function rollSave(stat){
-  const val = parseInt(document.getElementById(stat).value) || 10;
-  const bonus = mod(val);
+function getSkillBonus(id){
+  return parseInt(document.getElementById(id).value) || 0;
+}
 
-  const box = document.getElementById(stat + "_save");
-
+function rollSkill(skillId, stat){
+  const statValue = getStat(stat);
+  const statMod = getMod(statValue);
+  const skillBonus = getSkillBonus(skillId);
+  const totalBonus = statMod + skillBonus;
+  const box = document.getElementById(skillId + "_res");
   const interval = setInterval(() => {
     box.innerText = "🎲 " + Math.floor(Math.random() * 21);
   }, 50);
 
   setTimeout(() => {
     clearInterval(interval);
-
     const roll = Math.floor(Math.random() * 21);
-    const total = roll + bonus;
-
-    box.innerText = `🎲 ${roll} + ${bonus} = ${total}`;
+    const total = roll + totalBonus;
+    let text = `🎲 ${roll} + ${statMod} + ${skillBonus} = ${total}`;
+    box.innerText = text;
   }, 2000);
 }
 </script>
