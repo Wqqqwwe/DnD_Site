@@ -1,7 +1,11 @@
-from bottle import route, run
+from bottle import route, run, template, static_file
 
-@route('/hello')
-def hello():
-    return "Hello World!"
+@route('/')
+def home():
+    return template('index')
 
-run(host='localhost', port=8080, debug=True)
+@route('/static/<filename:path>')
+def server_static(filename):
+    return static_file(filename, root='./static')
+
+run(host='localhost', port=8080, debug=True, reloader=True)
