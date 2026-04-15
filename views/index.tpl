@@ -10,7 +10,7 @@
 <body>
 <div class="tabs">
   <button class="tab active" onclick="openTab('sheet', this)">Анкета</button>
-  <button class="tab" onclick="openTab('skills', this)">Навыки</button>
+
   <button class="tab" onclick="loadWiki(this)">Вики</button>
 </div>
 
@@ -164,7 +164,7 @@ function rollSkill(skillId, stat){
     clearInterval(interval);
     const roll = Math.floor(Math.random() * 21);
     const total = roll + totalBonus;
-    let text = `🎲 ${roll} + ${statMod} + ${skillBonus} = ${total}`;
+    let text = `🎲 ${roll} + (${statMod}) + (${skillBonus}) = (${total})`;
     box.innerText = text;
   }, 2000);
 }
