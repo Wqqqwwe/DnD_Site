@@ -1,11 +1,15 @@
 from bottle import route, run, template, static_file
 
 @route('/')
-def home():
+def index():
     return template('index')
 
+@route('/wiki')
+def wiki():
+    return template('wiki')
+
 @route('/static/<filename:path>')
-def server_static(filename):
+def static_files(filename):
     return static_file(filename, root='./static')
 
 run(host='localhost', port=8080, debug=True, reloader=True)
